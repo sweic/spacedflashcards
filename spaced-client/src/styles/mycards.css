@@ -1,0 +1,127 @@
+:root {
+    --light-main: #B0C4DE;
+    --light-white: #FFFFFF;
+    --light-text: #79a4db;
+    --light-select: #a5b8d1;
+    --light-bg: #f4f5f7;
+}
+.deck {
+    cursor: pointer;
+    height: 250px;
+    margin-bottom: 1em;
+    padding: 0.5em 1em;
+    flex-basis: 280px;
+    flex-grow: 1;
+    background-color: white;
+    
+
+}
+
+.deck a{
+    height: 100%;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+}
+
+.deck-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.deck-btn-controllers {
+    padding-bottom: 1em;
+    display: flex;
+    justify-content: end;
+    gap: 1.5em;
+}
+
+.deck-btn-edit:hover {
+    color: var(--light-text);
+}
+.deck-btn-delete:hover {
+    color: red;
+}
+
+.deck-btn-copy:hover {
+    color: var(--light-text);
+}
+
+.deck-btn-copy {
+    cursor: pointer;
+}
+.deck-btn-copy:active {
+transform: translateY(2px)
+}
+
+.deck-btn-edit:active {
+    transform: translateY(3px)
+}
+
+.deck h1 {
+    color: black;
+    font-size: 32px;
+    line-height: 1.5em;
+}
+
+.deck span {
+    word-break: break-all;
+}
+
+.decks-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1em 1em;
+    height: 100%;
+    overflow-y:  auto !important;
+    justify-content:space-around;
+    gap: 1em;
+}
+
+.overview-card {
+    word-wrap: break-word;
+    
+    padding: 1em 0.5em;
+    width: 86%;
+    height: 125px;
+    color: black;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    box-shadow: 0px 1px 2px rgb(0 0 0 /0.2);
+
+}
+
+.overview-card span {
+    width: 100%;
+    word-wrap: break-word;
+    margin: auto !important;
+}
+.overview-card-container {
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 1.5em;
+    
+}
+
+.overview-card-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.testbro {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.mantine-muwymz {
+    padding-bottom: 0 !important;
+}
+.mantine-xny050 {
+    padding-left: 0.5em !important;
+}

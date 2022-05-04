@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["filterJson"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type UserdashboardsDecks {
+  id        String @map("_id") @db.ObjectId
+  completion Int
+  count      Int 
+  id_        String @map("id")
+  rrule      String
+}
+
+type UserdecksDecks {
+  cards UserdecksDecksCards[]
+  desc  String
+  id    String 
+  title String
+  count Int
+  rrule String
+}
+
+
+type UserdecksDecksCards {
+  back  String
+  front String
+}
+
+type userSocialComponent {
+  username String
+  userID String
+}
+
+model userdashboards {
+  id          String                @id @default(auto()) @map("_id") @db.ObjectId
+  v           Int                   @map("__v")
+  decks       UserdashboardsDecks[]
+  lastUpdated DateTime              @db.Date
+  username    String @unique
+  user users @relation(fields: [userID], references: [username])
+  userID String @unique
+ 
+}
+
+model userdecks {
+  id       String           @id @default(auto()) @map("_id") @db.ObjectId
+  v        Int              @map("__v")
+  decks    UserdecksDecks[]
+  total    Int
+  username String @unique
+  user users @relation(fields: [userID], references: [username])
+  userID String @unique
+
+}
+
+model users {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  v         Int    @map("__v")
+  email     String @unique
+  firstName String
+  lastName  String
+  password  String
+  username  String @unique
+  userdecks userdecks?
+  userdashboard userdashboards?
+}
+
+model usersocial {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  v         Int    @map("__v")
+  username String @unique
+  searchHistory userSocialComponent[]
+  friends userSocialComponent[]
+  
+}

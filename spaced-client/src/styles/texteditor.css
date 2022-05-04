@@ -1,0 +1,188 @@
+:root {
+    --light-main: #B0C4DE;
+    --light-white: #FFFFFF;
+    --light-text: #79a4db;
+    --light-select: #a5b8d1;
+}
+.create-container {
+    overflow-y: auto;
+    height: calc(100% - 4em);
+}
+
+.create-containers {
+    height: 100%;
+    overflow-y: auto;
+}
+.ql-align-center {
+    display: flex;
+    justify-content: center;
+}
+.ql-align-right {
+    display: flex;
+    justify-content: right;
+}
+.ql-align-left {
+    display: flex;
+    justify-content: left;
+}
+
+.text-area h1 {
+    color: black !important;
+}
+
+.ql-editor h1 {
+    color: black !important
+}
+
+.root-rte-container {
+    display: flex;
+    justify-content: center;
+    gap: 0.5em;
+    overflow-y: auto !important;
+}
+
+
+.ql-editor p {
+    margin: 0;
+}
+
+
+.root-rte {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    min-width: 300px;
+}
+
+h2 {
+    text-align: center;
+    color:#a5b8d1; 
+}
+
+.label-root-rte {
+    
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.more-options-icon {
+    position: absolute;
+    left: 75%;
+   
+}
+
+.options {
+    background-color: var(--light-main);
+    color: white;
+    padding: 0.5em;
+    border-radius: 1.2em;
+    cursor: pointer;
+}
+
+
+
+.create-btn-controller-container {
+    color: white;
+    align-items: center;
+    margin-top: 1em !important;
+    width: 330px;
+    height: 60px;
+    margin: 0 auto;
+    background-color: #a5b8d1;
+    border-radius: 2em;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.save-btn {
+    background-color: #a5b8d1;
+}
+
+.set-tags-container {
+    padding: 0 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    margin-top: 1em !important; 
+    max-width: 400px;
+    margin: 0 auto;
+    min-height: 400px;
+
+}
+
+.day-chooser {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    justify-content: space-around;
+}
+
+.selected-node {
+    background-color: var(--light-text) !important;
+}
+.day-node {
+    cursor: pointer;
+    display: flex;
+    font-size: 12px;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: var(--light-main);
+    border-radius: 1.5em;
+    color: white;
+    font-weight: bold;
+}
+
+
+@media (max-width: 900px) {
+.root-rte-container {
+    
+    align-items: center;
+    display: flex;
+    flex-direction: column !important;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+.ql-editor {
+    max-width: 85vw;
+}
+
+    
+}
+
+@media (min-width: 901px) {
+    .ql-editor {
+        max-width: 612px;
+        min-height: 250px;
+        max-height: 250px;
+        overflow-y: scroll;
+    }
+}
+
+.mantine-1bv64gd {
+    background-color: white !important;
+}
+
+@media (max-width: 400px) {
+    .mantine-jnnv40 {
+        width: 100% !important;
+    }
+}
+
+.preview-test {
+    position: absolute;
+}
+
+.relative {
+    position: relative;
+    height: 100%;
+}
+
+.mantine-w29q45 {
+    margin: 0;
+    padding-right: min(4vw, 2em);
+    padding-top: .5em;
+}
