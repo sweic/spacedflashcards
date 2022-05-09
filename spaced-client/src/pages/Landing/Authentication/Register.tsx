@@ -1,16 +1,21 @@
-import React, {useState} from 'react'
+import React, {useEffect} from 'react'
 import {useForm} from '@mantine/form'
 import {TextInput, Group, PasswordInput, Button, Center} from '@mantine/core'
-import { useAppDispatch, useAppSelector } from "../../redux/store"
-import { registerRequest } from "../../redux/reducers/auth"
 import { useNavigate } from "react-router-dom"
+import { apiRequest } from "../../../redux/reducers/api"
+import { resetErrors } from "../../../redux/reducers/auth"
+import { useAppDispatch, useAppSelector } from "../../../redux/store"
+import { useOnFulfilled } from "../../../shared/hooks/useOnFulfilled"
+import { ErrorContainer, FormFieldContainer } from "./Styles"
+
 
 
 function Register() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const {isFulfilled} = useOnFulfilled()
   const api = useAppSelector(state => state.api)
-
+  const auth = useAppSelector(state => state.auth)
 
     const form = useForm({
         initialValues: {
@@ -33,40 +38,44 @@ function Register() {
       });
 
     const handleSubmit = async () => {
-
-        const resultAction = await dispatch(registerRequest({form, navigate}))
-       
+      const body = {url: 'registerAuth', method: 'POST', data: form.values, type: 'REGISTER'}
+      isFulfilled(apiRequest, body, () => {
+      navigate('/u/home')
+     }) 
       }
     
+  useEffect(() => {
+    dispatch(resetErrors())
+  }, [])
   return (
-      
-    <div>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Group>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
+        <ErrorContainer>
+            {auth.error.register && <p style={{color: 'red'}}>{auth.error.register} is taken!</p>}
+        </ErrorContainer>
+        <Group sx={{paddingTop: '1em'}}>
             <TextInput sx={{height: 75}}  label="First Name" {...form.getInputProps('firstName')}/>
             <TextInput sx={{height: 75}} label="Last Name" {...form.getInputProps('lastName')}/>
         </Group>
-        <div style={{paddingTop: 16}}>
+        <FormFieldContainer>
             <TextInput sx={{height: 75}} label="Email" {...form.getInputProps('email')}/>
-        </div>
-        <div style={{paddingTop: 16}}>
+        </FormFieldContainer>
+        <FormFieldContainer>
             <TextInput sx={{height: 75}} label="Username" {...form.getInputProps('username')}/>
-            </div>
-            <div style={{paddingTop: 16}}>
+        </FormFieldContainer>
+        <FormFieldContainer>
             <PasswordInput sx={{height: 75}} label="Password" {...form.getInputProps('password')}/>
-            </div>
-            <div style={{paddingTop: 16}}>
+        </FormFieldContainer>
+        <FormFieldContainer>
             <PasswordInput  sx={{height: 75}}label="Confirm Password" {...form.getInputProps('confirmPassword')}/>
-        </div>
-        <div style={{paddingTop: 20}}>
-         <Center>
-          <Button loading={api.loading === 'pending'} sx={{}}type="submit" color="#79a4db" size="md">
-          Submit
-          </Button>
-        </Center>
-        </div>
-        </form>
-    </div>
+        </FormFieldContainer>
+        <FormFieldContainer>
+            <Center>
+            <Button loading={api.loading === 'pending'} sx={{}}type="submit" color="#79a4db" size="md">
+            Submit
+            </Button>
+            </Center>
+        </FormFieldContainer>
+    </form>
   )
 }
 

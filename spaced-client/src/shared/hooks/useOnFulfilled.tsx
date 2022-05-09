@@ -5,14 +5,13 @@ import { useAppDispatch } from "../../redux/store"
 export const useOnFulfilled = () => {
     const dispatch = useAppDispatch()
     
-    const isFulfilled = async (asyncFunction: AsyncThunk<any, any, {}>, body : any, cbSuccess: Function, cbFailure?: Function) => {
+    const isFulfilled = async (asyncFunction: AsyncThunk<any, any, {}>, body? : any, cbSuccess?: Function, cbFailure?: Function) => {
        const result = await dispatch(asyncFunction(body))
        if (!asyncFunction.fulfilled.match(result)) {
-        cbFailure!()
+        if (cbFailure) cbFailure()
         return
        }
-       console.log('aaa')
-       cbSuccess(result.payload)
+       if (cbSuccess) cbSuccess(result.payload)
     }
     return {isFulfilled}
 }

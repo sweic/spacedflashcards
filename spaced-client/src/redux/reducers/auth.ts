@@ -5,7 +5,12 @@ import {apiRequest} from './api'
 interface AuthUser {
     user: string,
     loading: LoadingStatus,
-    error: boolean
+    error: AuthError
+}
+
+interface AuthError {
+    login: boolean,
+    register: 'Username' | 'Email' | ''
 }
 
 export type LoadingStatus = 'idle' | 'success' | 'failed' | 'pending'
@@ -13,18 +18,17 @@ export type LoadingStatus = 'idle' | 'success' | 'failed' | 'pending'
 const initialState: AuthUser = {
     user: '',
     loading: 'idle',
-    error: false
+    error: {
+        login: false,
+        register: ''
+    }
 } 
 
 export const fetchUser = createAsyncThunk(
     'auth/fetchUser',
-    async (navigate: NavigateFunction, {dispatch, rejectWithValue}) => {
+    async (_, {dispatch, rejectWithValue}) => {
         const body = {url: 'verifyCookie', method: 'GET', data: '', type: 'VERIFY'}
         const resultAction = await dispatch(apiRequest(body))
-        if (apiRequest.rejected.match(resultAction)) {
-            navigate('/')
-        }
-       
         
     }
 )
@@ -32,7 +36,7 @@ export const fetchUser = createAsyncThunk(
 export const loginRequest = createAsyncThunk(
     'auth/loginRequest',
     async ({form, navigate} : any, {dispatch, rejectWithValue}) => {
-        const body = {url: 'loginAuth', method: 'POST', data: form.values, type: 'VERIFY'}
+        const body = {url: 'loginAuth', method: 'POST', data: form.values, type: 'LOGIN'}
         const resultAction = await dispatch(apiRequest(body))
         if (apiRequest.fulfilled.match(resultAction)) {
             navigate('/u/home')
@@ -43,7 +47,7 @@ export const loginRequest = createAsyncThunk(
 export const registerRequest = createAsyncThunk(
     'auth/registerRequest',
     async ({form, navigate}: any, {dispatch}) => {
-        const body = {url: 'registerAuth', method: 'POST', data: form.values, type: 'VERIFY'}
+        const body = {url: 'registerAuth', method: 'POST', data: form.values, type: 'REGISTER'}
         const resultAction = await dispatch(apiRequest(body))
         if (apiRequest.fulfilled.match(resultAction)) {
             navigate('/u/home')
@@ -59,6 +63,16 @@ const authSlice = createSlice({
         userLogged(state, action) {
             state.user = action.payload
             state.loading = 'success'
+        },
+        loginError(state) {
+            state.error.login = true
+        },
+        registerError(state, action) {
+            state.error.register = action.payload
+        },
+        resetErrors(state) {
+            state.error.login = false
+            state.error.register = ''
         }
     },
     extraReducers: (builder) => {
@@ -68,42 +82,34 @@ const authSlice = createSlice({
         })
         .addCase(fetchUser.fulfilled, (state, action) => {
                 state.loading = 'success'
-                state.error = false
         })
         .addCase(fetchUser.rejected, (state) => {
             state.loading = 'failed'
             state.user = ''
-            state.error = true
         })
         .addCase(loginRequest.pending, (state) => {
             state.loading = 'pending'
-            state.error = false
         })
         .addCase(loginRequest.fulfilled, (state, action) => {
             state.loading = 'success'
-            state.error = false
         })
         .addCase(loginRequest.rejected, (state) => {
             state.loading = 'failed'
             state.user = ''
-            state.error = true
         })
         .addCase(registerRequest.pending, (state) => {
             state.loading = 'pending'
-            state.error = false
         })
         .addCase(registerRequest.fulfilled, (state, action) => {
             state.loading = 'success'
-            state.error = false
         })
         .addCase(registerRequest.rejected, (state) => {
             state.user = ''
             state.loading = 'failed'
-            state.error = false
         })
         
     }
 })
 
-export const {userLogged} = authSlice.actions
+export const {userLogged, loginError, registerError, resetErrors} = authSlice.actions
 export default authSlice.reducer

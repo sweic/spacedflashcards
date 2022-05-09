@@ -9,7 +9,6 @@ import {useState} from 'react'
 import { showNotification } from "@mantine/notifications";
 import { useSocial, useSocialAPI } from "./useSocial";
 import { UserActivityDeck } from "../types/social";
-import AccountAuth from "../../components/Authentication/AuthModal";
 
 export const useAppModals = () => {
     const modals = useModals()
@@ -69,16 +68,9 @@ export const useAppModals = () => {
       })
     }
 
-    const openAuthModal = (authMode: number) => {
-      const id = modals.openModal({
-        centered: false,
-        children: (
-          <AccountAuth curr={authMode}></AccountAuth>
-        )
-      })
-    }
+    
 
-  return {openDeleteModal, openShareModal, openImportModal, openShareFriendsModal, openAuthModal}
+  return {openDeleteModal, openShareModal, openImportModal, openShareFriendsModal}
 }
 
 

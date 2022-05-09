@@ -23,4 +23,4 @@ export const EMPTY_DASHBOARD: DashboardType = {
     decks: []
 }
 
-export const DAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+export const DAYS: string[] = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']

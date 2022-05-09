@@ -25,12 +25,12 @@ export const apiRequest = createAsyncThunk(
             return axios
             .get(`${endpointURL}/${url}`, {timeout: 10000})
             .then((res) => {dispatch(apiSuccess({payload: res, type})); return res.data})
-            .catch((err) => {dispatch(apiFailed()); return rejectWithValue('not found')})
+            .catch((error) => {dispatch(apiFailed({payload: body, error})); return rejectWithValue('not found')})
         } else if (method === 'POST') {
            return axios
             .post(`${endpointURL}/${url}`, data)
             .then((res) => {dispatch(apiSuccess({payload: res, type})); return res.data})
-            .catch((err) => {dispatch(apiFailed()); return rejectWithValue('not found')})
+            .catch((error) => {dispatch(apiFailed({payload: body, error})); return rejectWithValue('not found')})
         }
        
     }
@@ -40,7 +40,7 @@ const apiSlice = createSlice({
     name: 'api',
     initialState,
     reducers: { 
-        apiFailed(state) {
+        apiFailed(state, payload) {
             state.error = true
             state.loading = 'idle'
         },

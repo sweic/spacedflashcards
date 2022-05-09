@@ -6,8 +6,9 @@ import apiReducer from './reducers/api'
 import socialReducer from './reducers/social'
 
 import { updateMiddleware } from "./middleware/update"
+import { errorMiddleware } from "./middleware/error"
 
-const middlewares = getDefaultMiddleware({serializableCheck: false}).concat(updateMiddleware)
+const middlewares = getDefaultMiddleware({serializableCheck: false}).concat(updateMiddleware, errorMiddleware)
 export const store = configureStore({
     reducer: {
         auth: authReducer,

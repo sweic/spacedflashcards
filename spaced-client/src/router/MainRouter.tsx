@@ -2,13 +2,14 @@ import { ModalsProvider } from "@mantine/modals";
 import { NotificationsProvider } from "@mantine/notifications";
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Landing from "../components/Landing/Landing";
+// import Landing from "../components/Landing/Landing";
+import Landing from '../pages/Landing/Landing'
 import Create from '../pages/Create/Create';
 import EditWrapper from "../pages/Edit/Edit";
 import Home from '../pages/Home/Home';
 import Study from "../pages/Study/StudyWrapper";
 import useSocket from "../shared/hooks/useSocket";
-import ProtectedRoute from "../shared/utils/ProtectedRoute";
+import ProtectedRoute from "./ProtectedRoute";
 import HistoryRouter from './HistoryRouter';
 import RouterHistory from './RouterHistory';
 function MainRouter() {

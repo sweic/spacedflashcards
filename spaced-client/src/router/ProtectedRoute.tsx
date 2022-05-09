@@ -1,19 +1,18 @@
-import React, {useEffect, useState} from 'react'
-import {useNavigate, Route} from 'react-router-dom'
 import { Loader } from "@mantine/core"
-import {useAppDispatch, useAppSelector} from '../../redux/store'
-import { fetchUser } from "../../redux/reducers/auth"
-import { Columnbox } from "../components/Flexbox/Flexbox"
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { fetchUser } from "../redux/reducers/auth"
+import { useAppDispatch, useAppSelector } from '../redux/store'
+import { useOnFulfilled } from "../shared/hooks/useOnFulfilled"
 
 
 function ProtectedRoute({children} : {children: JSX.Element}) {
     const dispatch = useAppDispatch()
     const auth = useAppSelector(state => state.auth)
     const navigate = useNavigate()
+    const {isFulfilled} = useOnFulfilled()
     useEffect(() => {
-      if (!auth.user) {
-        dispatch(fetchUser(navigate))
-      }
+      if (!auth.user) isFulfilled(fetchUser, undefined, undefined, () => navigate('/'))
     }, [dispatch])
     
   return (

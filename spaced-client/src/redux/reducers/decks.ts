@@ -27,9 +27,9 @@ export const fetchDecks = createAsyncThunk(
         const user = currState.auth.user
         const body = {method: 'POST', url: 'fetchData', type: 'FETCH', data: {user: user, force: force}}
         const resultAction = await dispatch(apiRequest(body))
-        console.log(resultAction)
     }
 )
+
 
 const dataSlice = createSlice({
     name: 'dataStore',

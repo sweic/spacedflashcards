@@ -11,7 +11,7 @@ export default createGlobalStyle`
     line-height: 1.2;
     ${font.size(16)}
     ${font.regular}
-    word-break: break-all;
+    word-break: break-word;
     
   }
   #root {
