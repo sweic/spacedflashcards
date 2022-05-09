@@ -44,7 +44,7 @@ export const fetchCardByID = async (req: Request, res: Response) => {
     const {user, id} = req.body
     const target = await prisma.userdecks.findFirst({where:{username: user}})
     const deck = target!["decks"].find((deck : any) => deck.id === id)
-    if (deck) return res.json(deck)
+    if (deck) return res.status(200).send(deck)
     return res.status(409).send()
 }
 

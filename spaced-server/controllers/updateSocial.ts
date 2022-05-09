@@ -178,7 +178,7 @@ export const importSharedDeck = async (req: Request, res: Response) => {
 
         const txn = await prisma.$transaction([update, remove, create])
         if (!txn) throw 'txn'
-        return res.status(200).send()
+        return res.status(200).send(deck.title)
 
     } catch (error) {
         return res.status(409).send()
