@@ -1,16 +1,16 @@
-import React, {useState, useEffect} from 'react';
 import { ModalsProvider } from "@mantine/modals";
-import {NotificationsProvider} from "@mantine/notifications"
+import { NotificationsProvider } from "@mantine/notifications";
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import Landing from "../components/Landing/Landing";
-import {Routes, Route} from 'react-router-dom'
-import ProtectedRoute from "../utils/ProtectedRoute";
-import Create from "../components/Create/Create";
-import Home from "../components/Home/Home";
-import Study from "../components/Study/StudyWrapper";
-import HistoryRouter from './HistoryRouter'
-import RouterHistory from './RouterHistory'
-import EditWrapper from "../components/Edit/EditWrapper";
-import useSocket from "../hooks/useSocket";
+import Create from '../pages/Create/Create';
+import EditWrapper from "../pages/Edit/Edit";
+import Home from '../pages/Home/Home';
+import Study from "../pages/Study/StudyWrapper";
+import useSocket from "../shared/hooks/useSocket";
+import ProtectedRoute from "../shared/utils/ProtectedRoute";
+import HistoryRouter from './HistoryRouter';
+import RouterHistory from './RouterHistory';
 function MainRouter() {
   useSocket()
   return (
@@ -19,12 +19,11 @@ function MainRouter() {
           <HistoryRouter history={RouterHistory}>
               <Routes>
                   <Route path="/u/edit/:id" element={<ProtectedRoute children={<EditWrapper/>}/>}/>
-                  <Route path="/test" element={<Create/>}/>
                   <Route path="/" element={<Landing/>}/>
                   <Route path="/u/home" element={<ProtectedRoute children={<Home/>}/>}/>
                   <Route path="/u/create" element={<ProtectedRoute children={<Create/>}/>}/>
-                  <Route path="/u/test" element={<div><Home/></div>}/>
                   <Route path="u/study/:id" element={<ProtectedRoute children={<Study/>}/>}/>
+                  <Route path="*" element={<Landing/>}/>
               </Routes>
               </HistoryRouter>
       </ModalsProvider>

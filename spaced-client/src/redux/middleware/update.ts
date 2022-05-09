@@ -25,7 +25,7 @@ export const updateMiddleware: Middleware = storeAPI => next => async action => 
             case 'IMPORT':
                 showNotification({
                     title: "Success!",
-                    message: `Successfully imported Deck ${action.payload.payload.data.title} into My Cards!`
+                    message: `Successfully imported Deck ${action.payload.payload.data} into My Cards!`
                 })
                 return;
         }

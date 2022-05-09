@@ -3,11 +3,15 @@ import {useForm} from '@mantine/form'
 import {TextInput, Group, PasswordInput, Button, Center} from '@mantine/core'
 import {useNavigate} from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from "../../redux/store"
-import { userLogged, loginRequest } from "../../redux/reducers/auth"
+import { useOnFulfilled } from "../../shared/hooks/useOnFulfilled"
+import { apiRequest } from "../../redux/reducers/api"
+import { TestButton } from "../../shared/components/Button/Styles"
+import RectangleBtn from "../../shared/components/Button/RectangleBtn"
 
 function Login() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const {isFulfilled} = useOnFulfilled()
   const api = useAppSelector(state => state.api)
   const form = useForm({
     initialValues: {
@@ -22,8 +26,10 @@ function Login() {
   })
 
   const handleSubmit = async () => {
-    
-      const resultAction = await dispatch(loginRequest({form, navigate}))
+    const body = {url: 'loginAuth', method: 'POST', data: form.values, type: 'VERIFY'}
+    isFulfilled(apiRequest, body, () => {
+      navigate('/u/home')
+    })
      
       
   }

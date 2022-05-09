@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import { EMPTY_DASHBOARD } from "../../constants"
-import { DashboardType } from "../../types/dashboard"
-import { DeckType } from "../../types/deck"
+import { EMPTY_DASHBOARD } from "../../shared/constants"
+import { DashboardType } from "../../shared/types/dashboard"
+import { DeckType } from "../../shared/types/deck"
 import { RootState } from "../store"
 import { apiRequest } from "./api"
 import {LoadingStatus} from './auth'
@@ -27,7 +27,7 @@ export const fetchDecks = createAsyncThunk(
         const user = currState.auth.user
         const body = {method: 'POST', url: 'fetchData', type: 'FETCH', data: {user: user, force: force}}
         const resultAction = await dispatch(apiRequest(body))
-        
+        console.log(resultAction)
     }
 )
 

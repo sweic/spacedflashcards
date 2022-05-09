@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserSocial, UserActivity, UserActivityNotification, ActivityHistoryList } from "../../types/social";
+import { UserSocial, UserActivity, UserActivityNotification, ActivityHistoryList } from "../../shared/types/social";
 import { io, Socket } from "socket.io-client";
 
 interface UserSocialClient {
