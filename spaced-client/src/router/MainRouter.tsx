@@ -15,7 +15,7 @@ import RouterHistory from './RouterHistory';
 function MainRouter() {
   useSocket()
   return (
-    <NotificationsProvider>
+    <NotificationsProvider zIndex={99999}>
       <ModalsProvider>
           <HistoryRouter history={RouterHistory}>
               <Routes>

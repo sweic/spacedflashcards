@@ -15,8 +15,7 @@ export default createGlobalStyle`
     
   }
   #root {
-    display: flex;
-    flex-direction: column;
+    position: relative;
   }
   button,
   input,

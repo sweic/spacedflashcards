@@ -70,9 +70,8 @@ export interface DynamicHeaderPropsTypes {
 
 export interface MyDecksPropsTypes {
     details: DeckType,
-    deleteHandler?: (de: string, deckID: string, user: string) => string,
-    user?: string, 
-    shareModal: (deckID: string) => void,
-    openShareFriendsModal: (deck: UserActivityDeck) => void
+    openDeleteModal?: (id?: string | undefined, title?: string | undefined) => void,
+    openShareIDModal?: (id?: string | undefined) => void,
+    openShareFriendModal?: (id?: string | undefined) => void,
 
 }

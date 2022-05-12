@@ -19,7 +19,7 @@ function FriendList() {
           return (
           <UserSearch search={search} sent={social.sentFriendRequest.includes(search.username)} isFriend={social.friends.includes(search.username)}/>)
         })}
-        {loading && <Loader/>}
+        {loading && <Loader />}
         {queriedSearchHistory.map((search) => {
           if (search.username === user) return
           return (<UserSearch search={search}  sent={social.sentFriendRequest.includes(search.username)} isFriend={social.friends.includes(search.username)}/>)

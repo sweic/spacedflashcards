@@ -10,6 +10,7 @@ function AuthModal({curr = 1}: {curr: number}): JSX.Element {
   const [active, setActive] = useState(curr)
 
   return (
+    
       <AuthHeader>
           <AuthTabs>
             <Tabs active={active} onTabChange={setActive}>

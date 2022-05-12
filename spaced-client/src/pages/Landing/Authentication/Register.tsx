@@ -52,9 +52,9 @@ function Register() {
         <ErrorContainer>
             {auth.error.register && <p style={{color: 'red'}}>{auth.error.register} is taken!</p>}
         </ErrorContainer>
-        <Group sx={{paddingTop: '1em'}}>
-            <TextInput sx={{height: 75}}  label="First Name" {...form.getInputProps('firstName')}/>
-            <TextInput sx={{height: 75}} label="Last Name" {...form.getInputProps('lastName')}/>
+        <Group sx={{paddingTop: '1em'}} >
+            <TextInput sx={{height: 75, flexGrow: '1'}}  label="First Name" {...form.getInputProps('firstName')}/>
+            <TextInput sx={{height: 75, flexGrow: '1'}} label="Last Name" {...form.getInputProps('lastName')}/>
         </Group>
         <FormFieldContainer>
             <TextInput sx={{height: 75}} label="Email" {...form.getInputProps('email')}/>

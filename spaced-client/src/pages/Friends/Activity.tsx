@@ -28,7 +28,6 @@ function Activity({deploySocial, variables, activity}: {deploySocial: any, varia
 }
 
 export default Activity
-{/* <Check className="deck-btn-edit" size={30} style={{cursor: 'pointer'}} onClick={() => deploySocial({...variables, type: activity.type === 'SHARE' ? 'IMPORT' : 'ACCEPT'})}/> */}
 
 const renderActivityDetails = (activity: UserActivityNotification) => {
   var activityTitle: string = '';
