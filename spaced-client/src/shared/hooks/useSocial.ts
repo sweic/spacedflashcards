@@ -47,14 +47,24 @@ export const useSocialAPI = () => {
     const username = useAppSelector(state => state.auth.user)
     const dispatch = useAppDispatch()
     const social = useAppSelector(state => state.social)
-    const shareHelper = async (deck: UserActivityDeck, toShare: string[]) => {
+    const decks = useAppSelector(state => state.dataStore.decks)
+    const shareHelper = async (deckID: string, toShare: string[]) => {
+        const targetDeck = decks.find((val) => {
+            return val.id === deckID
+        })
+        if (!targetDeck) return 
+        const newDeck: UserActivityDeck = {
+            title: targetDeck.title,
+            deckID: targetDeck.id
+        }
+        if (!targetDeck) return
         for (const friend of toShare) {
             const variables = {
                 target: username,
                 from: username,
                 to: friend,
                 type: "SHARE",
-                deck: deck
+                deck: newDeck
             }
             await deploySocial(variables)
         }
