@@ -2,9 +2,9 @@ import React, { forwardRef } from 'react'
 import {DeckBtn as Button, DeckBtnDangerous as DangerousButton, DeckBtnCircular as CircularBtn} from './Styles'
 
 
-export const DeckBtn = forwardRef(({control, onClick, children} : {control?: JSX.Element, onClick: React.MouseEventHandler<HTMLButtonElement>, children? : string}, ref) => {
+export const DeckBtn = forwardRef(({control, onClick, children, align} : {control?: JSX.Element, onClick: React.MouseEventHandler<HTMLButtonElement>, children? : string, align?: boolean}, ref) => {
     return (
-        <Button onClick={onClick} ref={ref as React.RefObject<HTMLButtonElement>}>
+        <Button style={align ? {float: 'right'} : {alignSelf: 'start'}} onClick={onClick} ref={ref as React.RefObject<HTMLButtonElement>}>
             {control}
             {children}
         </Button>

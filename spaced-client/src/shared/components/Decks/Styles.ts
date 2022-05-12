@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import { color } from "../../utils/styles"
 export const DeckContainer = styled.div`
     display: flex;
@@ -43,6 +43,7 @@ export const DeckBtn = styled.button`
 
     &:active {
         transform: translateY(3px);
+        color: ${color.primary};
     }
 `
 
@@ -73,4 +74,13 @@ export const MyCardsContainer = styled.div`
     padding: 1em 1em;
     justify-content:space-around;
     gap: 1em;
+    height: calc(100vh - 4em);
+    overflow-y: auto;
+`
+
+
+const alignRight = css`
+    position: absolute;
+    right: 1em;
+    top: 1em;
 `

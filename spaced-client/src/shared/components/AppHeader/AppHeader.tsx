@@ -32,7 +32,7 @@ function AppHeader({appProps}: {appProps: DynamicHeaderPropsTypes}) {
       <AppHeaderMain>
        <AppHeaderText>
             {location.state && displayBack && <ArrowLeft onClick={(e) => navigateHandler()} style={{cursor: "pointer"}} size={32} strokeWidth={3} color={'white'}/>}
-            <h1>{headerName}</h1>
+            <h1 style={{color: "white"}}>{headerName}</h1>
         </AppHeaderText>
         <AppHeaderControls>
             {headerName !== "create" &&  <AppHeaderControl/>}

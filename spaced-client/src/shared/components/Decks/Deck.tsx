@@ -8,13 +8,13 @@ import { DeckBtns, DeckContainer, DeckInfo } from "./Styles"
 
 
 function Deck({appProps}: {appProps: MyDecksPropsTypes}) {
-  const {details, deleteHandler, user, shareModal, openShareFriendsModal} = appProps
+  const {details, openDeleteModal, openShareIDModal, openShareFriendModal} = appProps
   const navigate = useNavigate()
   const redirectHandle = () => {
-    navigate(`/u/study/${details.id}`, {state: {deck: details, before: deleteHandler ? 'cards' : 'dashboard'}})
+    navigate(`/u/study/${details.id}`, {state: {deck: details, before: openDeleteModal ? 'cards' : 'dashboard'}})
   }
   return (
-      <Paper withBorder shadow="md" style={{width: '400px'}}>
+      <Paper withBorder shadow="md" style={{width: '400px', height: '320px'}}>
     <DeckContainer onClick={() => redirectHandle()}>
             
         <DeckInfo>
@@ -26,10 +26,10 @@ function Deck({appProps}: {appProps: MyDecksPropsTypes}) {
             <DeckBtn control={<Edit/>} onClick={(e) => {e.stopPropagation(); navigate(`/u/edit/${details.id}`, {state: {deck: details}})}}/>
             <Menu control={<DeckBtn onClick={(e: any) => {e.stopPropagation()}} control={<Share/>}/>} >
                 <Menu.Label>Share </Menu.Label>
-                <Menu.Item onClick={(e: any) => {e.stopPropagation(); shareModal(details.id)}}> Via Deck ID</Menu.Item>
-                <Menu.Item onClick={(e: any) => {e.stopPropagation(); openShareFriendsModal({title: details.title, deckID: details.id})}}>To Friends</Menu.Item>
+                <Menu.Item onClick={(e: any) => {e.stopPropagation(); openShareIDModal!(details.id)}}> Via Deck ID</Menu.Item>
+                <Menu.Item onClick={(e: any) => {e.stopPropagation(); openShareFriendModal!(details.id)}}>To Friends</Menu.Item>
             </Menu>
-            <DeckBtnDangerous control={<Trash/>} onClick={(e) => {e.stopPropagation(); deleteHandler!(details.title, details.id, user!)} }/>
+            <DeckBtnDangerous control={<Trash/>} onClick={(e) => {e.stopPropagation(); openDeleteModal!(details.id, details.title)} }/>
         </DeckBtns>
     </DeckContainer>
     </Paper>
