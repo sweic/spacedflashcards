@@ -1,36 +1,33 @@
-import mongoose from "mongoose";
-import User from "../models/User";
-import UserDeck from "../models/UserDecks";
-import UserDashboard from '../models/UserDashboard'
+import { asyncCatch } from "../middlewares/asyncCatch";
 import { Response, Request } from "express";
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient()
-export const registerAuth = async (req: Request, res: Response): Promise<void> => {
+export const registerAuth = asyncCatch(async (req: Request, res: Response) => {
     
     const {email, firstName, lastName, username, password} = req.body
     const usernameExist = await prisma.users.findFirst({where: {username: username}})
     const emailExist = await prisma.users.findFirst({where: {email: email}})
     if (usernameExist) {
-        res.status(409).send({errorCode: 0})
-        return
+        return res.status(409).send({errorCode: 0})
+        
     } else if (emailExist) {
-        res.status(409).send({errorCode: 1})
-        return
+        return res.status(409).send({errorCode: 1})
+        
     }
     else {
         bcrypt.genSalt(10, (saltError, salt) => {
             if (saltError) {
-                res.status(409).send({errorCode:2})
-                return
+                return res.status(409).send({errorCode:2})
+                
             }
 
             bcrypt.hash(password, salt, async (hashError, hash) => {
                 if (hashError) {
-                    res.status(409).send({errorCode:3})
-                    return
+                    return res.status(409).send({errorCode:3})
+                    
                 }
                
                 await prisma.users.create({
@@ -69,17 +66,17 @@ export const registerAuth = async (req: Request, res: Response): Promise<void> =
                         }
                     }
                 }).then(() => {
-                    sendCookies(res, username)
-                    return
+                    return sendCookies(res, username)
+                    
                 })
             })
 
         })
         
     }   
-}
+})
 
-export const loginAuth = async (req: Request, res: Response) => {
+export const loginAuth = asyncCatch(async (req: Request, res: Response) => {
     const {username, password} = req.body
     const match = await prisma.users.findFirst({where :{username: username}})
     if (match) {
@@ -88,14 +85,14 @@ export const loginAuth = async (req: Request, res: Response) => {
             sendCookies(res, match.username)
             return
         } else {
-            res.status(409).send({errorCode: 0})
-            return
+            return res.status(409).send({errorCode: 0})
+            
         }
     } else {
-        res.status(409).send({errorCode: 0})
-        return
+        return res.status(409).send({errorCode: 0})
+        
     }
-} 
+}) 
 
 const generateAT = (input: string): string => {
     return jwt.sign(input, process.env.JWT_SECRET as jwt.Secret)
@@ -104,7 +101,7 @@ const generateRT = (input: string): string => {
     return jwt.sign(input, process.env.REFRESH_SECRET as jwt.Secret)
 }
 
-export const verifyCookie = (req: Request, res: Response) => {
+export const verifyCookie = asyncCatch((req: Request, res: Response) => {
     const accessToken = req.cookies.accessToken || "false"
     const refreshToken = req.cookies.refreshToken || "false"
     var user: string = "";
@@ -112,8 +109,8 @@ export const verifyCookie = (req: Request, res: Response) => {
         if (err) {
             jwt.verify(refreshToken, process.env.REFRESH_SECRET as jwt.Secret, function(err: any, string: any) {
                 if (err) {
-                    res.status(409).send({errorCode: 0})
-                    return
+                    return res.status(409).send({errorCode: 0})
+                    
                 }
                 user = string
             })
@@ -123,28 +120,28 @@ export const verifyCookie = (req: Request, res: Response) => {
         if (res.headersSent) {
             return
         }
-        sendCookies(res, user)
-        return
+        return sendCookies(res, user)
+        
     }
     )
 
-}
+})
 
 const sendCookies = (res: Response, creds: string) => {
     const at = generateAT(creds)
     const rt = generateRT(creds)
-    res
+    return res
         .status(200)
         .cookie("accessToken", at, {httpOnly: true, sameSite: "none", expires: new Date(new Date().getTime() + 60 * 1000 * 24 * 4), secure: true})
         .cookie("refreshToken", rt, {httpOnly: true, sameSite: "none", expires: new Date(new Date().getTime() + 60 * 1000 * 24 * 4), secure: true})
         .send({user: creds})
-    return
+    
 }
 
-export const logoutAuth = (req: Request, res: Response) => {
-    res
+export const logoutAuth = asyncCatch((req: Request, res: Response) => {
+    return res
         .status(200)
         .cookie("accessToken", "", {httpOnly: true, sameSite: "none", expires: new Date(new Date().getTime() +1), secure: true})
         .cookie("refreshToken", "", {httpOnly: true, sameSite: "none", expires: new Date(new Date().getTime() + 1), secure: true})
         .send()
-}
+})

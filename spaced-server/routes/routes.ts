@@ -1,7 +1,7 @@
 import express from 'express'
 import { fetchData, fetchCardByID } from "../controllers/fetchData"
 import { querySearchHistory } from "../controllers/querySearch"
-import { registerAuth, loginAuth, verifyCookie, logoutAuth  } from "../controllers/registerAuth"
+import { registerAuth, loginAuth, verifyCookie, logoutAuth  } from "../controllers/auth"
 import { updateCount, deleteDeck, editDeck, saveDeck, importDeck } from "../controllers/updateDeck"
 import { acceptFriendRequest, createNotification, deleteActivity, importSharedDeck, sendFriendRequest } from "../controllers/updateSocial"
 const router = express.Router()

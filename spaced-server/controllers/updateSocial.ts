@@ -1,60 +1,57 @@
-import { ActivityType, PrismaClient, PrismaPromise, usersocial } from "@prisma/client";
-import { Request, Response } from "express";
-import { UserActivity, UserActivityNotification } from "../ws/init";
-import {v4 as uuidv4} from 'uuid'
+import { ActivityType, PrismaClient } from "@prisma/client";
+import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
-
+import { v4 as uuidv4 } from 'uuid';
+import { UserActivity } from "../ws/init";
+import { asyncCatch } from "../middlewares/asyncCatch";
 const prisma = new PrismaClient()
 
 const hour = 1000 * 60 * 60
 
-export const deleteActivity = async (req: Request, res: Response) => {
+export const deleteActivity = asyncCatch(async (req: Request, res: Response, next: NextFunction) => {
     const {target, newActivityHistory} = req.body as UserActivity
-    const update = await prisma.usersocial.update({
-        where: {
-            username: target
-        },
-        data: {
-            activityHistory: {
-                set: newActivityHistory
+        await prisma.usersocial.update({
+            where: {
+                username: target
+            },
+            data: {
+                activityHistory: {
+                    set: newActivityHistory
+                }
             }
-        }
-    })
-    if (!update) return res.status(409).send()
-    return res.status(200).send()
-}
+        })
+        return res.status(200).send()
+    
+})
 
-export const sendFriendRequest = async (req: Request, res: Response) =>  {
-    const {to, from} = req.body as UserActivity
-    const create = sendNotification(req.body, to)
-    const sent = prisma.usersocial.update({
-        where: {
-            username: from
-        },
-        data: {
-            sentFriendRequest: {
-                push: to
+export const sendFriendRequest = asyncCatch(async (req: Request, res: Response, next: NextFunction) =>  {
+        const {to, from} = req.body as UserActivity
+        const create = sendNotification(req.body, to)
+        const sent = prisma.usersocial.update({
+            where: {
+                username: from
+            },
+            data: {
+                sentFriendRequest: {
+                    push: to
+                }
             }
-        }
-    })
+        })
+    
+        await prisma.$transaction([create, sent])
+    
+        return res.status(200).send()
 
-    const final = await prisma.$transaction([create, sent])
+})
 
-    if (!final) return res.status(409).send()
-    return res.status(200).send()
-
-}
-
-export const acceptFriendRequest = async (req: Request, res: Response) => {
+export const acceptFriendRequest = asyncCatch(async (req: Request, res: Response) => {
     const {from, to, newActivityHistory} = req.body as UserActivity
-    try {
-        // requestedUser = sender, username: receipient.
         const senderData = await prisma.usersocial.findFirst({
             where: {
                 username: from
             }
         })
-        if (!senderData) return res.status(409).send()
+        if (!senderData) throw new Error(`Sender ${from} not found`)
         const newSentRequest = senderData.sentFriendRequest.filter((val) => val !== to)
         const updateReceiver = prisma.usersocial.update({
             where: {
@@ -98,18 +95,13 @@ export const acceptFriendRequest = async (req: Request, res: Response) => {
         const createNotificationReceiver = sendNotification(notificationReceiver, to )
         const createNotificationSender = sendNotification(notificationSender, from)
 
-        const results = await prisma.$transaction([updateReceiver, updateSender, createNotificationReceiver, createNotificationSender])
-        if (!results) return res.status(409).send()
+        await prisma.$transaction([updateReceiver, updateSender, createNotificationReceiver, createNotificationSender])
         return res.status(200).send()
 
-    } catch(err) {
-        return res.status(409).send()
-    }
     
-}
+})
 
-export const importSharedDeck = async (req: Request, res: Response) => {
-    try {
+export const importSharedDeck = asyncCatch(async (req: Request, res: Response) => {
         const {from, to, deck, newActivityHistory} = req.body as UserActivity
         const findDeck = await prisma.userdecks.findFirst({
             where: {
@@ -176,26 +168,17 @@ export const importSharedDeck = async (req: Request, res: Response) => {
         }
         const create = sendNotification(notificationBody, to)
 
-        const txn = await prisma.$transaction([update, remove, create])
-        if (!txn) throw 'txn'
+        await prisma.$transaction([update, remove, create])
         return res.status(200).send(deck.title)
 
-    } catch (error) {
-        return res.status(409).send()
-    }
-}
+})
 
 
 
-export const createNotification = async (req: Request, res: Response) => {
-    try {
-        const create = await prisma.$transaction([sendNotification(req.body as UserActivity, req.body.to)])
-        if (!create) return res.status(409).send()
+export const createNotification = asyncCatch(async (req: Request, res: Response) => {
+        await prisma.$transaction([sendNotification(req.body as UserActivity, req.body.to)])
         return res.status(200).send()
-    } catch (error) {
-        return res.status(409).send()
-    }
-}
+})
 
 export const sendNotification = (notificationDetails: UserActivity, user: string) => {
     const {from, type, to, deck} = notificationDetails

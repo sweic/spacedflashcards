@@ -1,9 +1,9 @@
-import { PrismaClient, userSocialComponent } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-
-
 const prisma = new PrismaClient()
-export const querySearchHistory = async (req: Request, res: Response) => {
+import { asyncCatch } from "../middlewares/asyncCatch";
+
+export const querySearchHistory = asyncCatch(async (req: Request, res: Response) => {
     const {keywords} = req.body
     const targets = await prisma.users.findMany({
         where: {
@@ -25,4 +25,4 @@ export const querySearchHistory = async (req: Request, res: Response) => {
     return res.status(200).send(result)
 
 
-}
+})

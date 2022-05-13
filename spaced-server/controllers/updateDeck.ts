@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import {v4 as uuidv4} from 'uuid'
+import { asyncCatch } from "../middlewares/asyncCatch";
 import RRule from "rrule"
 const prisma = new PrismaClient()
 
@@ -17,7 +18,7 @@ const weekdays = {
 // add an async error catcher
 
 
-export const saveDeck = async (req: Request, res: Response) => {
+export const saveDeck = asyncCatch(async (req: Request, res: Response) => {
     const {deck, title, desc, user, rrule, count} = req.body
     const newUUID = uuidv4().replace(/-/gi, "")
     let byweekday = []
@@ -50,7 +51,7 @@ export const saveDeck = async (req: Request, res: Response) => {
         count: count,
     }
 
-    const updatedUser = await prisma.users.update({
+   await prisma.users.update({
         where: {username: user},
         data: {
             userdecks: {
@@ -71,11 +72,11 @@ export const saveDeck = async (req: Request, res: Response) => {
     })
    
     res.status(200).send()
-}
+})
 
-export const updateCount = async (req: Request, res: Response) => {
+export const updateCount = asyncCatch(async (req: Request, res: Response) => {
     const {deckID, user} = req.body
-    const update = await prisma.userdashboards.update({
+    await prisma.userdashboards.update({
         where: {
             username: user,
         },
@@ -95,11 +96,11 @@ export const updateCount = async (req: Request, res: Response) => {
         }
     })
     res.status(200).send()
-}
+})
 
-export const deleteDeck = async (req: Request, res: Response) => {
+export const deleteDeck = asyncCatch(async (req: Request, res: Response) => {
     const {deckID, username} = req.body
-    const deleted = await prisma.users.update({
+    await prisma.users.update({
         where: {
             username: username
         },
@@ -128,14 +129,11 @@ export const deleteDeck = async (req: Request, res: Response) => {
             }
         }
     })
-    if (deleted) {
-        res.status(200).send()
-        return
-    }
-    res.status(409).send()
-}
+    return res.status(200).send()
+        
+})
 
-export const editDeck = async (req: Request, res: Response) => {
+export const editDeck = asyncCatch(async (req: Request, res: Response) => {
     const {deck, title, desc, user, rrule, count, deckID} = req.body
     let byweekday = []
     for (const day of rrule) {
@@ -199,19 +197,14 @@ export const editDeck = async (req: Request, res: Response) => {
        
 
     })
-    if (updatedUser) {
-        res.status(200).send()
-        return
-    } else {
-        res.status(409).send()
-    }
+    return res.status(200).send()
+        
     
-}
+})
 
-export const importDeck = async (req: Request, res: Response) => {
+export const importDeck = asyncCatch(async (req: Request, res: Response) => {
     const {deckID, username} = req.body
-    try {
-        const target = await prisma.users.findFirst({
+    const target = await prisma.users.findFirst({
             where: {
                 userdecks: {
                     decks: {
@@ -226,50 +219,47 @@ export const importDeck = async (req: Request, res: Response) => {
                 userdashboard: true
             }
         })
-        if (target) {
-            const deckInfo = target.userdecks?.decks.find((deck) => {
-                return deck.id === deckID
-            })
-            const dashboardInfo = target.userdashboard?.decks.find((deck) => {
-                return deck.id === deckID
-            })
-            const newUUID = uuidv4().replace(/-/gi, "")
-            deckInfo!.id = newUUID
-            const newDashboardInfo = {
-                id: new mongoose.Types.ObjectId().toString(),
-                id_: newUUID,
-                completion: 0,
-                count: dashboardInfo!.count,
-                rrule: dashboardInfo!.rrule
-            }
-            await prisma.users.update({
-                where: {
-                    username: username
-                },
-                data: {
-                    userdecks: {
-                        update: {
-                            decks: {
-                                push: deckInfo
-                            }
+    if (target) {
+        const deckInfo = target.userdecks?.decks.find((deck) => {
+            return deck.id === deckID
+        })
+        const dashboardInfo = target.userdashboard?.decks.find((deck) => {
+            return deck.id === deckID
+        })
+        const newUUID = uuidv4().replace(/-/gi, "")
+        deckInfo!.id = newUUID
+        const newDashboardInfo = {
+            id: new mongoose.Types.ObjectId().toString(),
+            id_: newUUID,
+            completion: 0,
+            count: dashboardInfo!.count,
+            rrule: dashboardInfo!.rrule
+        }
+        await prisma.users.update({
+            where: {
+                username: username
+            },
+            data: {
+                userdecks: {
+                    update: {
+                        decks: {
+                            push: deckInfo
                         }
-                    },
-                    userdashboard: {
-                        update: {
-                            decks: {
-                                push: newDashboardInfo
-                            }
+                    }
+                },
+                userdashboard: {
+                    update: {
+                        decks: {
+                            push: newDashboardInfo
                         }
                     }
                 }
-            })
+            }
+        })
             
-            return res.status(200).send({title: deckInfo?.title})
+        return res.status(200).send({title: deckInfo?.title})
         } else {
             return res.status(409).send()
         }
-    } catch(err) {
-        return res.status(409).send()
-    }
     
-}
+})

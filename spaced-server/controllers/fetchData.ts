@@ -1,17 +1,16 @@
 import mongoose from 'mongoose'
 import UserDeck from "../models/UserDecks"
-import {Request, Response} from 'express'
+import {Request, RequestHandler, Response} from 'express'
 import UserDashboard from "../models/UserDashboard"
 import { UserDashboardType, UserDeckType, DashboardClientType, DeckClientType, Deck, Card, UserDashboardDeckType } from "../types/dashboardTypes"
 import RRule from "rrule"
 import { PrismaClient } from "@prisma/client"
+import { asyncCatch } from "../middlewares/asyncCatch"
 const prisma = new PrismaClient()
 const hour = 1000 * 60 * 60
 
-export const fetchData = async (req: Request, res: Response) => {
-
+export const fetchData = asyncCatch(async (req: Request, res: Response) => {
     const {user, force} = req.body
-    try {
       const userInfo = await prisma.users.findFirst({
         where: {
           username: user
@@ -28,25 +27,20 @@ export const fetchData = async (req: Request, res: Response) => {
       const userDashboard = userInfo?.userdashboard
       const userSocial = userInfo?.usersocial
 
-      if (!userDeck || !userDashboard || !userSocial) {
-        return res.status(409).send()
-      }
+      if (!userDeck || !userDashboard || !userSocial) throw new Error ('missing data')
       const deckClient = await initialiseDashboard(userDashboard, userDeck, user, force)
       return res.json({decks: userDeck, dashboard: deckClient, social: userSocial})
     }
-    catch(err) {
-      return res.status(409).send()
-    }
 
-}
+)
 
-export const fetchCardByID = async (req: Request, res: Response) => {
+export const fetchCardByID = asyncCatch(async (req: Request, res: Response) => {
     const {user, id} = req.body
     const target = await prisma.userdecks.findFirst({where:{username: user}})
     const deck = target!["decks"].find((deck : any) => deck.id === id)
-    if (deck) return res.status(200).send(deck)
-    return res.status(409).send()
-}
+    if (!deck) throw new Error('Deck in Userdecks not found')
+    return res.status(200).send(deck)
+})
 
 
 const initialiseDashboard = async (dashboard: UserDashboardType, userDeck: UserDeckType, username: string, force: boolean): Promise<DashboardClientType> => {
