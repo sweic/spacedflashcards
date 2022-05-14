@@ -8,9 +8,13 @@ import { PrismaClient } from "@prisma/client"
 import { asyncCatch } from "../middlewares/asyncCatch"
 const prisma = new PrismaClient()
 const hour = 1000 * 60 * 60
-
+interface FetchDataType {
+  user: string,
+  id?: string,
+  force: boolean
+}
 export const fetchData = asyncCatch(async (req: Request, res: Response) => {
-    const {user, force} = req.body
+    const {user, force} = req.body as FetchDataType
       const userInfo = await prisma.users.findFirst({
         where: {
           username: user
@@ -28,14 +32,14 @@ export const fetchData = asyncCatch(async (req: Request, res: Response) => {
       const userSocial = userInfo?.usersocial
 
       if (!userDeck || !userDashboard || !userSocial) throw new Error ('missing data')
-      const deckClient = await initialiseDashboard(userDashboard, userDeck, user, force)
+      const deckClient = await initialiseDashboard(userDashboard, userDeck, user, force!)
       return res.json({decks: userDeck, dashboard: deckClient, social: userSocial})
     }
 
 )
 
 export const fetchCardByID = asyncCatch(async (req: Request, res: Response) => {
-    const {user, id} = req.body
+    const {user, id} = req.body as FetchDataType
     const target = await prisma.userdecks.findFirst({where:{username: user}})
     const deck = target!["decks"].find((deck : any) => deck.id === id)
     if (!deck) throw new Error('Deck in Userdecks not found')
@@ -95,8 +99,6 @@ function sameDay (d1: Date, d2: Date) {
 
   if (d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth() && d1.getDate() === d2.getDate()) return true
   return false
-  
-    return (d1.getFullYear() !== d2.getFullYear() || d1.getMonth() !== d2.getMonth() || d1.getDate() !== d2.getDate())
   }
 
   function rruleIncludes(rrule: string) {

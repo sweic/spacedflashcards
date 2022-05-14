@@ -1,5 +1,5 @@
 import { ActivityType, PrismaClient } from "@prisma/client";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import mongoose from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
 import { UserActivity } from "../ws/init";
@@ -8,7 +8,7 @@ const prisma = new PrismaClient()
 
 const hour = 1000 * 60 * 60
 
-export const deleteActivity = asyncCatch(async (req: Request, res: Response, next: NextFunction) => {
+export const deleteActivity = asyncCatch(async (req: Request, res: Response) => {
     const {target, newActivityHistory} = req.body as UserActivity
         await prisma.usersocial.update({
             where: {
@@ -24,7 +24,7 @@ export const deleteActivity = asyncCatch(async (req: Request, res: Response, nex
     
 })
 
-export const sendFriendRequest = asyncCatch(async (req: Request, res: Response, next: NextFunction) =>  {
+export const sendFriendRequest = asyncCatch(async (req: Request, res: Response) =>  {
         const {to, from} = req.body as UserActivity
         const create = sendNotification(req.body, to)
         const sent = prisma.usersocial.update({
@@ -103,17 +103,19 @@ export const acceptFriendRequest = asyncCatch(async (req: Request, res: Response
 
 export const importSharedDeck = asyncCatch(async (req: Request, res: Response) => {
         const {from, to, deck, newActivityHistory} = req.body as UserActivity
-        const findDeck = await prisma.userdecks.findFirst({
+        const findUser = await prisma.users.findFirst({
             where: {
                 username: from
             },
+            include: {
+                userdecks: true,
+                userdashboard: true
+            }
         })
-        const findDashboard = await prisma.userdashboards.findFirst({
-            where: {
-                username: from
-            },
-        })
-        if (!findDeck || !deck || !findDashboard) throw 'fi'
+        const findDeck = findUser?.userdecks
+        const findDashboard = findUser?.userdashboard
+
+        if (!findDeck || !deck || !findDashboard) throw new Error("Error finding user data")
         var deckDetails = findDeck.decks.find((detail) => {
             return detail.id === deck.deckID
         })
@@ -146,20 +148,20 @@ export const importSharedDeck = asyncCatch(async (req: Request, res: Response) =
                             push: dashboardDetails
                         }
                     }
+                },
+                usersocial: {
+                    update: {
+                        activityHistory: {
+                            set: newActivityHistory
+                        }
+                    }
                 }
+                
+                
             }
         })
 
-        const remove = prisma.usersocial.update({
-            where: {
-                username: to
-            },
-            data: {
-                activityHistory: {
-                    set: newActivityHistory
-                }
-            }
-        })
+       
         const notificationBody = {
             from: from,
             to: to,
@@ -168,8 +170,8 @@ export const importSharedDeck = asyncCatch(async (req: Request, res: Response) =
         }
         const create = sendNotification(notificationBody, to)
 
-        await prisma.$transaction([update, remove, create])
-        return res.status(200).send(deck.title)
+        await prisma.$transaction([update, create])
+        return res.status(200).send({title: deck.title})
 
 })
 

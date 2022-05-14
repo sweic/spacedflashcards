@@ -5,9 +5,17 @@ import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient()
+interface AuthType {
+    username: string,
+    password: string,
+    email: string,
+    firstName: string,
+    lastName: string,
+    
+}
 export const registerAuth = asyncCatch(async (req: Request, res: Response) => {
     
-    const {email, firstName, lastName, username, password} = req.body
+    const {email, firstName, lastName, username, password} = req.body as AuthType
     const usernameExist = await prisma.users.findFirst({where: {username: username}})
     const emailExist = await prisma.users.findFirst({where: {email: email}})
     if (usernameExist) {
@@ -15,7 +23,6 @@ export const registerAuth = asyncCatch(async (req: Request, res: Response) => {
         
     } else if (emailExist) {
         return res.status(409).send({errorCode: 1})
-        
     }
     else {
         bcrypt.genSalt(10, (saltError, salt) => {
@@ -77,10 +84,10 @@ export const registerAuth = asyncCatch(async (req: Request, res: Response) => {
 })
 
 export const loginAuth = asyncCatch(async (req: Request, res: Response) => {
-    const {username, password} = req.body
+    const {username, password} = req.body as Partial<AuthType>
     const match = await prisma.users.findFirst({where :{username: username}})
     if (match) {
-        const correct = await bcrypt.compare(password, match.password)
+        const correct = await bcrypt.compare(password!, match.password)
         if (correct) {
             sendCookies(res, match.username)
             return

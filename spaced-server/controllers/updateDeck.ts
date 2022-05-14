@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, UserdecksDecks } from "@prisma/client";
 import { Request, Response } from "express";
 import {v4 as uuidv4} from 'uuid'
 import { asyncCatch } from "../middlewares/asyncCatch";
@@ -15,11 +15,11 @@ const weekdays = {
     'Sa': RRule.SA,
     'Su': RRule.SU,
 }
-// add an async error catcher
-
-
+interface UpdateDeckType extends UserdecksDecks {
+    user: string
+}
 export const saveDeck = asyncCatch(async (req: Request, res: Response) => {
-    const {deck, title, desc, user, rrule, count} = req.body
+    const {cards, title, desc, user, rrule, count} = req.body as UpdateDeckType
     const newUUID = uuidv4().replace(/-/gi, "")
     let byweekday = []
     for (const day of rrule) {
@@ -38,7 +38,7 @@ export const saveDeck = asyncCatch(async (req: Request, res: Response) => {
         title: title || new Date().getTime().toString().slice(-4),
         id: newUUID, 
         desc: desc || "",
-        cards : deck,
+        cards : cards,
         count: count,
         rrule: newRuleString
     }
@@ -75,7 +75,7 @@ export const saveDeck = asyncCatch(async (req: Request, res: Response) => {
 })
 
 export const updateCount = asyncCatch(async (req: Request, res: Response) => {
-    const {deckID, user} = req.body
+    const {id, user} = req.body as Partial<UpdateDeckType>
     await prisma.userdashboards.update({
         where: {
             username: user,
@@ -84,7 +84,7 @@ export const updateCount = asyncCatch(async (req: Request, res: Response) => {
             decks: {
                 updateMany: {
                     where: {
-                        id_: deckID
+                        id_: id
                     },
                     data: {
                         completion: {
@@ -99,10 +99,10 @@ export const updateCount = asyncCatch(async (req: Request, res: Response) => {
 })
 
 export const deleteDeck = asyncCatch(async (req: Request, res: Response) => {
-    const {deckID, username} = req.body
+    const {id, user} = req.body as Partial<UpdateDeckType>
     await prisma.users.update({
         where: {
-            username: username
+            username: user
         },
         data: {
             userdecks: {
@@ -110,7 +110,7 @@ export const deleteDeck = asyncCatch(async (req: Request, res: Response) => {
                     decks: {
                         deleteMany: {
                             where: {
-                                id: deckID
+                                id: id
                             }
                         }
                     }
@@ -121,7 +121,7 @@ export const deleteDeck = asyncCatch(async (req: Request, res: Response) => {
                     decks: {
                         deleteMany: {
                             where: {
-                                id_: deckID
+                                id_: id
                             }
                         }
                     }
@@ -134,7 +134,7 @@ export const deleteDeck = asyncCatch(async (req: Request, res: Response) => {
 })
 
 export const editDeck = asyncCatch(async (req: Request, res: Response) => {
-    const {deck, title, desc, user, rrule, count, deckID} = req.body
+    const {cards, title, desc, user, rrule, count, id} = req.body as UpdateDeckType
     let byweekday = []
     for (const day of rrule) {
         byweekday.push(weekdays[day as keyof typeof weekdays])
@@ -150,16 +150,16 @@ export const editDeck = asyncCatch(async (req: Request, res: Response) => {
 
     const newDeck = {
         title: title || new Date().getTime().toString().slice(-4),
-        id: deckID, 
+        id: id, 
         desc: desc || "",
-        cards : deck,
+        cards : cards,
         count: count,
         rrule: newRuleString
     }
 
     const newDashboardDeck = {
         id: new mongoose.Types.ObjectId().toString(),
-        id_: deckID,
+        id_: id,
         rrule: newRuleString,
         completion: 0,
         count: count,
@@ -174,7 +174,7 @@ export const editDeck = asyncCatch(async (req: Request, res: Response) => {
                     decks: {
                         updateMany: {
                             where: {
-                                id: deckID
+                                id: id
                             },
                             data: newDeck
                         }
@@ -186,7 +186,7 @@ export const editDeck = asyncCatch(async (req: Request, res: Response) => {
                     decks: {
                         updateMany: {
                             where: {
-                                id_: deckID
+                                id_: id
                             },
                             data: newDashboardDeck
                         }
@@ -203,13 +203,13 @@ export const editDeck = asyncCatch(async (req: Request, res: Response) => {
 })
 
 export const importDeck = asyncCatch(async (req: Request, res: Response) => {
-    const {deckID, username} = req.body
+    const {id, user} = req.body as UpdateDeckType
     const target = await prisma.users.findFirst({
             where: {
                 userdecks: {
                     decks: {
                         some: {
-                            id: deckID
+                            id: id
                         }
                     }
                 }
@@ -221,10 +221,10 @@ export const importDeck = asyncCatch(async (req: Request, res: Response) => {
         })
     if (target) {
         const deckInfo = target.userdecks?.decks.find((deck) => {
-            return deck.id === deckID
+            return deck.id === id
         })
         const dashboardInfo = target.userdashboard?.decks.find((deck) => {
-            return deck.id === deckID
+            return deck.id === id
         })
         const newUUID = uuidv4().replace(/-/gi, "")
         deckInfo!.id = newUUID
@@ -237,7 +237,7 @@ export const importDeck = asyncCatch(async (req: Request, res: Response) => {
         }
         await prisma.users.update({
             where: {
-                username: username
+                username: user
             },
             data: {
                 userdecks: {
