@@ -21,7 +21,7 @@ function DeleteModal({onClose}: {onClose: () => void}) {
     const dispatch = useAppDispatch()
     
     const handleDelete = async () => {
-        const body = {method: 'POST', url: 'deleteDeck', data: {deckID: currDeckID, username: user}, type: 'DELETE'}
+        const body = {method: 'POST', url: 'deleteDeck', data: {id: currDeckID, user: user}, type: 'DELETE'}
         await dispatch(apiRequest(body))
         await dispatch(fetchDecks(true))
         onClose()

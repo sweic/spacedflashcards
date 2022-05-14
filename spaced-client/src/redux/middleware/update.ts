@@ -23,7 +23,6 @@ export const updateMiddleware: Middleware = storeAPI => next => async action => 
                 storeAPI.dispatch(updateSocial({searchHistory: action.payload.payload.data.social.searchHistory, friends: action.payload.payload.data.social.friends, activityHistory: action.payload.payload.data.social.activityHistory, sentFriendRequest: action.payload.payload.data.social.sentFriendRequest })) 
                 return
             case 'IMPORT':
-                console.log(action.payload.payload.data)
                 showNotification({
                     title: "Success!",
                     message: `Successfully imported Deck ${action.payload.payload.data.title} into My Cards!`

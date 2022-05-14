@@ -13,7 +13,7 @@ function ImportID({onClose}: {onClose: () => void}) {
     const [deckID, setDeckID] = useState('')
     const {isFulfilled} = useOnFulfilled()
     const importHandler = async () => {
-        const body = {method: 'POST', url: 'importDeck', data: {deckID: deckID, username: user}, type: 'IMPORT'}
+        const body = {method: 'POST', url: 'importDeck', data: {id: deckID, user: user}, type: 'IMPORT'}
         isFulfilled(apiRequest, body, () => {
             onClose()
             dispatch(fetchDecks(false))

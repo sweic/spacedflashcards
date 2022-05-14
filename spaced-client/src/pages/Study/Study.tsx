@@ -9,7 +9,6 @@ import { DeckType } from "../../shared/types/deck";
 
 function StudyScreen({details, closePreview} : {details: DeckType, closePreview?: React.Dispatch<React.SetStateAction<boolean>>}) {
   const {currCardRef, nextCard,previousCard, toggleSide, isFrontRef, isAnimating, completeDeck} = useStudy(details)
-  console.log('rerendered')
   return (
     <StudyContainer>
         <FlashcardsContainer>

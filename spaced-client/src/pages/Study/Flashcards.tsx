@@ -5,8 +5,6 @@ import { FlashcardsBox, SideDisplay, FrontCard, BackCard } from "./Styles"
 
 function Flashcards({appProps}: {appProps: FlashcardsPropsTypes}) {
     const {isAnimating, isFrontRef, currCardRef, details} = appProps
-    console.log("isAnimating ", isAnimating)
-    console.log("isFront", isFrontRef.current)
 
   return (
     <FlashcardsBox>

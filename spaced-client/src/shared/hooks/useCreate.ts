@@ -107,11 +107,11 @@ export const useCreate = (details: DeckType) => {
         const tmp = deck.map((card) => Object.assign({}, card))
         tmp[curr]["front"] = front
         tmp[curr]["back"] = back
-        const body = {deck: tmp, title: title, desc: desc, user: user, rrule: daySelect, count: count}
+        const body = {cards: tmp, title: title, desc: desc, user: user, rrule: daySelect, count: count}
 
         // error handling todo here
         if (isEdit) {
-            await dispatch(apiRequest({method: 'POST', url: 'editDeck', data: {...body, deckID: isEdit, type: 'UPDATE'}})).then(async (res) =>  await dispatch(fetchDecks(true)))
+            await dispatch(apiRequest({method: 'POST', url: 'editDeck', data: {...body, id: isEdit, type: 'UPDATE'}})).then(async (res) =>  await dispatch(fetchDecks(true)))
 
         } else {
             await dispatch(apiRequest({method: 'POST', url: 'saveDeck', data: body, type: 'CREATE'})).then(async () => await dispatch(fetchDecks(true)))
