@@ -50,27 +50,27 @@ function Register() {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
         <ErrorContainer>
-            {auth.error.register && <p style={{color: 'red'}}>{auth.error.register} is taken!</p>}
+            {auth.error.register && <p data-id="register-error" style={{color: 'red'}}>{auth.error.register} is taken!</p>}
         </ErrorContainer>
         <Group sx={{paddingTop: '1em'}} >
-            <TextInput sx={{height: 75, flexGrow: '1'}}  label="First Name" {...form.getInputProps('firstName')}/>
-            <TextInput sx={{height: 75, flexGrow: '1'}} label="Last Name" {...form.getInputProps('lastName')}/>
+            <TextInput data-id="firstname-input"  sx={{height: 75, flexGrow: '1'}}  label="First Name" {...form.getInputProps('firstName')}/>
+            <TextInput data-id="lastname-input"  sx={{height: 75, flexGrow: '1'}} label="Last Name" {...form.getInputProps('lastName')}/>
         </Group>
         <FormFieldContainer>
-            <TextInput sx={{height: 75}} label="Email" {...form.getInputProps('email')}/>
+            <TextInput data-id="email-input" sx={{height: 75}} label="Email" {...form.getInputProps('email')}/>
         </FormFieldContainer>
         <FormFieldContainer>
-            <TextInput sx={{height: 75}} label="Username" {...form.getInputProps('username')}/>
+            <TextInput data-id="register-username-input" sx={{height: 75}} label="Username" {...form.getInputProps('username')}/>
         </FormFieldContainer>
         <FormFieldContainer>
-            <PasswordInput sx={{height: 75}} label="Password" {...form.getInputProps('password')}/>
+            <PasswordInput data-id="register-password-input" sx={{height: 75}} label="Password" {...form.getInputProps('password')}/>
         </FormFieldContainer>
         <FormFieldContainer>
-            <PasswordInput  sx={{height: 75}}label="Confirm Password" {...form.getInputProps('confirmPassword')}/>
+            <PasswordInput data-id="register-cfm-password-input" sx={{height: 75}}label="Confirm Password" {...form.getInputProps('confirmPassword')}/>
         </FormFieldContainer>
         <FormFieldContainer>
             <Center>
-            <Button loading={api.loading === 'pending'} sx={{}}type="submit" color="#79a4db" size="md">
+            <Button data-id="register-btn" loading={api.loading === 'pending'} sx={{}}type="submit" color="#79a4db" size="md">
             Submit
             </Button>
             </Center>

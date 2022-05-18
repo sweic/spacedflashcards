@@ -8,7 +8,7 @@ import { ActivityComponent, ActivityContent, ActivityControllers, ActivityMain }
 function Activity({deploySocial, variables, activity}: {deploySocial: any, variables: any, activity: UserActivityNotification}) {
   return (
     <Paper withBorder shadow="md">
-        <ActivityComponent>
+        <ActivityComponent data-id={`activity-${activity.type.toLowerCase()}-${activity.from}`}>
             <ActivityMain>
                 {renderIcon(activity.type)}
                 <ActivityContent>
@@ -16,10 +16,10 @@ function Activity({deploySocial, variables, activity}: {deploySocial: any, varia
                 </ActivityContent>
             </ActivityMain>
             <ActivityControllers>
-                {activity.type === 'REQUEST' || activity.type === 'SHARE' ? <DeckBtn onClick={() => deploySocial({...variables, type: activity.type === 'SHARE' ? 'IMPORT' : 'ACCEPT'})} control={<Check size={30}/>}/> : null}
+                {activity.type === 'REQUEST' || activity.type === 'SHARE' ? <DeckBtn onClick={() => deploySocial({...variables, type: activity.type === 'SHARE' ? 'IMPORT' : 'ACCEPT'})} control={<Check data-id={`activity-${activity.type.toLowerCase()}-${activity.from}-btn`} size={30}/>}/> : null}
                 <DeckBtnDangerous onClick={() => deploySocial({
                     ...variables, type: "DELETE"
-                  })} control={<Trash size={30}/>}/>
+                  })} control={<Trash data-id={`activity-${activity.type.toLowerCase()}-${activity.from}-delete-btn`} size={30}/>}/>
             </ActivityControllers>
             
         </ActivityComponent>

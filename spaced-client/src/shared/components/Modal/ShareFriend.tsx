@@ -17,17 +17,17 @@ function ShareFriend({onClose}: {onClose: () => void}) {
                 <ShareFriendContainer>
                 <FriendContainer>
                   {friends.map((friend, idx) => {
-                    return <FriendComponent key={idx}>
+                    return <FriendComponent key={friend}>
                       <ShareTitle>
                         <UserCircle color="black" /> <Text color="black">{friend}</Text>
                       </ShareTitle>
                       <ShareBtnContainer>
-                        <Checkbox id={`${friends[idx]}`} checked={sharedFriends.includes(friend)} onChange={(e) => sharedFriendHandler(e)}/>
+                        <Checkbox data-id={`share-checkbox-${friend}`} id={`${friend}`} checked={sharedFriends.includes(friend)} onChange={(e) => sharedFriendHandler(e)}/>
                       </ShareBtnContainer>
                     </FriendComponent>
                   })}
                 </FriendContainer>
-                <Button disabled={sharedFriends.length === 0} onClick={() => {shareHelper(currDeckID, sharedFriends); onClose()}}>Share</Button>
+                <Button data-id="share-friends-btn" disabled={sharedFriends.length === 0} onClick={() => {shareHelper(currDeckID, sharedFriends); onClose()}}>Share</Button>
                 </ShareFriendContainer>
             }
             </>

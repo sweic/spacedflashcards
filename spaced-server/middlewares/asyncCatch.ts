@@ -4,6 +4,7 @@ export const asyncCatch = (requestHandler: RequestHandler): RequestHandler => as
     try {
         return await requestHandler(req, res, next)
     }catch(err) {
+        return res.status(200).send()
         next(err)
     }
 }

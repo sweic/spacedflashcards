@@ -40,17 +40,17 @@ function Login() {
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
         <ErrorContainer>
-         {auth.error.login && <p style={{color: 'red'}}>Username or password is incorrect.</p>}
+         {auth.error.login && <p data-id="login-error" style={{color: 'red'}}>Username or password is incorrect.</p>}
         </ErrorContainer>
         <FormFieldContainer>
-            <TextInput sx={{height: 75}} label="Username" {...form.getInputProps('username')}/>
+            <TextInput data-id="username-input" sx={{height: 75}} label="Username" {...form.getInputProps('username')}/>
         </FormFieldContainer>
         <FormFieldContainer>
-            <PasswordInput sx={{height: 75}} label="Password" {...form.getInputProps('password')}/>
+            <PasswordInput data-id="password-input"sx={{height: 75}} label="Password" {...form.getInputProps('password')}/>
         </FormFieldContainer>
         <FormFieldContainer>
             <Center>
-            <Button loading={api.loading === "pending"} sx={{}}type="submit" color="#79a4db" size="md">
+            <Button data-id="login-submit" loading={api.loading === "pending"} sx={{}}type="submit" color="#79a4db" size="md">
             Submit
             </Button>
             </Center>

@@ -12,17 +12,17 @@ function Details({appProps} : {appProps: DetailsPropTypes}) {
   return (
     <>
     <CreateDetailsContainer>
-        <TextInput label="Deck title" placeholder="Max 40 characters" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={40}/>
-        <Textarea minRows={4} label="Deck description" placeholder="Max 100 characters" value={desc} onChange={(e) => setDesc(e.target.value)} maxLength={100}/>
+        <TextInput data-id="create-deck-title-input" label="Deck title" placeholder="Max 40 characters" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={40}/>
+        <Textarea data-id="create-deck-desc-input" minRows={4} label="Deck description" placeholder="Max 100 characters" value={desc} onChange={(e) => setDesc(e.target.value)} maxLength={100}/>
         <DayChooser>
             {DAYS.map((day) => {
                 return (
-                    <DayNode onClick={() => handleDaySelect(day)} key={day} selected={daySelect.includes(day)}>{day}</DayNode>
+                    <DayNode data-id={`create-deck-day-${day}-btn`} onClick={() => handleDaySelect(day)} key={day} selected={daySelect.includes(day)}>{day}</DayNode>
                 )
             })}
         </DayChooser>
-        <NumberInput value={count} onChange={(val) => setCount(val)}label="Number of times a day" placeholder = "Number of times a day" min={1} />
-        <Button disabled={title.length === 0} onClick={() => setCurr(0)}>Next</Button>
+        <NumberInput data-id="create-deck-number-input" value={count} onChange={(val) => setCount(val)}label="Number of times a day" placeholder = "Number of times a day" min={1} />
+        <Button data-id="create-deck-next-btn" disabled={title.length === 0} onClick={() => setCurr(0)}>Next</Button>
     </CreateDetailsContainer>
     </>
   )

@@ -16,7 +16,7 @@ function ShareID() {
      <Text color={'black'}>
      Deck ID:
     </Text>
-    <Code block style={{display: 'flex', justifyContent: "space-between"}} >{currDeckID}<DeckBtn control={<Clipboard/>} onClick={() => {navigator.clipboard.writeText(currDeckID); showNotification({title: 'Clipboard', message: "Deck ID has been copied to your clipboard!"})}}/></Code>
+    <Code data-id="share-id" block style={{display: 'flex', justifyContent: "space-between"}} >{currDeckID}<DeckBtn control={<Clipboard/>} onClick={() => {navigator.clipboard.writeText(currDeckID); showNotification({title: 'Clipboard', message: "Deck ID has been copied to your clipboard!"})}}/></Code>
     </>
     }
     </>

@@ -22,18 +22,18 @@ function AppHeaderControl() {
     }
     return (
         <>
-        <Menu zIndex={1000} classNames={{root: "hi"}} control ={<DeckBtnCircular control={<Plus/>}></DeckBtnCircular>}>
+        <Menu zIndex={1000} control ={<DeckBtnCircular control={<Plus data-id="create-btn"/>}></DeckBtnCircular>}>
             <Menu.Label>Create</Menu.Label>
             <Divider/>
-            <Menu.Item onClick={() => importIDModal.open()}>Import by deck ID</Menu.Item>
-            <Menu.Item onClick={() => {navigate('/u/create', {state: {prevURL: "/u/home"}})} }>New Deck</Menu.Item>
+            <Menu.Item data-id="import-id-btn" onClick={() => importIDModal.open()}>Import by deck ID</Menu.Item>
+            <Menu.Item data-id="new-deck-btn" onClick={() => {navigate('/u/create', {state: {prevURL: "/u/home"}})} }>New Deck</Menu.Item>
         </Menu>
-        <Menu classNames={{root: "hi"}} control={<DeckBtnCircular control={<Settings/>}></DeckBtnCircular>}>
+        <Menu control={<DeckBtnCircular control={<Settings data-id="settings-btn"/>}></DeckBtnCircular>}>
             <Menu.Label>
                 {user}
             </Menu.Label>
             <Divider></Divider>
-            <Menu.Item onClick={logout}icon={<Logout/>}>
+            <Menu.Item data-id="logout-btn" onClick={logout}icon={<Logout/>}>
                 Logout
             </Menu.Item>
         </Menu>

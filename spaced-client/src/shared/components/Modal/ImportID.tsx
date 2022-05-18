@@ -28,8 +28,8 @@ function ImportID({onClose}: {onClose: () => void}) {
     }
     return (
         <>
-          <TextInput placeholder="Deck ID"  required value={deckID} onChange={(e) => {setDeckID(e.currentTarget.value);}} />
-          <Button style={{marginTop: '1em'}} onClick={() => importHandler()} loading={api.loading === 'pending'}>Import</Button>
+          <TextInput placeholder="Deck ID" data-id="import-id-input"  required value={deckID} onChange={(e) => {setDeckID(e.currentTarget.value);}} />
+          <Button data-id="import-id-btn" style={{marginTop: '1em'}} onClick={() => importHandler()} loading={api.loading === 'pending'}>Import</Button>
         </>
     )
 }

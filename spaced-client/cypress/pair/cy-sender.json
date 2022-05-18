@@ -1,0 +1,11 @@
+{
+    "fixturesFolder": false,
+    "supportFile": false,
+    "pluginsFile": false,
+    "baseUrl": "http://localhost:3000",
+    "integrationFolder": "cypress/pair",
+    "testFiles": "**/sender-user.spec.ts",
+    "viewportWidth": 1000,
+    "viewportHeight": 600,
+    "defaultCommandTimeout": 60000
+  }

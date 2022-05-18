@@ -13,7 +13,7 @@ function Sidebar({setSidebarExpanded, sidebarExpanded, type, setter}: any) {
     <SidebarContainer sidebarExpanded={sidebarExpanded}>
         <SidebarList>
             {sidebarItems.map((item, idx) => {
-                return <SidebarItem id={item.name} key={idx} selected={type === item.name} onClick={(e) => toggle(e)}>
+                return <SidebarItem data-id={`sidebar-${item.name}-btn`} key={item.name} id={item.name} selected={type === item.name} onClick={(e) => toggle(e)}>
                     {item.component}
                     <p>{item.text}</p>
                 </SidebarItem>

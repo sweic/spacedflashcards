@@ -12,11 +12,11 @@ function OverviewCard({cardInfo, idx, jumpHandler}: {cardInfo: Card, idx: number
     <OverviewCardContainer>
         <OverviewCardBtns>
             <p>{idx + 1}</p>
-            <DeckBtnCircular control={<ExternalLink  size={20}/>} onClick={() => jumpHandler(idx)}/>
-            <DeckBtnCircular onClick={() => setIsFront(!isFront)} control={<Refresh  size={20}/>}/>
+            <DeckBtnCircular control={<ExternalLink data-id={`overview-card-${idx}-jump`} size={20}/>} onClick={() => jumpHandler(idx)}/>
+            <DeckBtnCircular  onClick={() => setIsFront(!isFront)} control={<Refresh data-id={`overview-card-${idx}-flip`} size={20}/>}/>
         </OverviewCardBtns>
         <OverviewCardContent>
-            {isFront ? <span dangerouslySetInnerHTML={{__html: cardInfo["front"]}}></span> : <span dangerouslySetInnerHTML={{__html: cardInfo["back"]}}></span>}
+            {isFront ? <span data-id={`overview-card-${idx}-front`} dangerouslySetInnerHTML={{__html: cardInfo["front"]}}></span> : <span data-id={`overview-card-${idx}-back`} dangerouslySetInnerHTML={{__html: cardInfo["back"]}}></span>}
         </OverviewCardContent>
     </OverviewCardContainer>
       

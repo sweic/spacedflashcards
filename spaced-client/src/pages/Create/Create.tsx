@@ -45,12 +45,12 @@ function Create({details}: {details?: DeckType}) {
         </TextEditorsContainer>
         <Controllers appProps={{deleteCard, previousCard, curr, deck, addCard, nextCard}}/>
         <CreateAdditionalOptions>
-            <Button onClick={() => saveHandler()}  loading={api.loading === 'pending'} >
+            <Button data-id="create-save-btn" onClick={() => saveHandler()}  loading={api.loading === 'pending'} >
             Save
             </Button>
-            <Menu position="top"  control={<DeckBtnCircular control={<Adjustments/>}/>}>
-                <Menu.Item  onClick={() => openOverview()} icon={<BrandStackoverflow size={24}/>}>Overview</Menu.Item>
-                <Menu.Item onClick={() => openPreview()} icon={<Eye size={24} />}>Preview</Menu.Item>
+            <Menu data-id="create-open-addoptions-btn" position="top" control={<DeckBtnCircular control={<Adjustments/>}/>}>
+                <Menu.Item data-id="create-open-overview-btn" onClick={() => openOverview()} icon={<BrandStackoverflow size={24}/>}>Overview</Menu.Item>
+                <Menu.Item data-id="create-open-preview-btn" onClick={() => openPreview()} icon={<Eye size={24} />}>Preview</Menu.Item>
             </Menu>
         </CreateAdditionalOptions>
         </>}

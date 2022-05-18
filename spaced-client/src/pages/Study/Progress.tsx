@@ -7,7 +7,7 @@ function Progress({appProps}: {appProps: ProgressPropsTypes}) {
   return (
     <ProgressBar>
         <MaxBar/>
-        <CurrentBar currentWidth={(currCardRef.current + 1) / (cards.length) * 100}/>
+        <CurrentBar data-id="study-progress-bar" currentWidth={(currCardRef.current + 1) / (cards.length) * 100}/>
     </ProgressBar>
   )
 }

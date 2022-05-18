@@ -17,9 +17,9 @@ function CardController({appProps, closePreview}:{appProps: CardControllerPropsT
   return (
     <>
     <FlashcardController>
-        <DeckBtnCircular control={<ChevronLeft size={36} />} onClick={() => previousCard()}></DeckBtnCircular>
-        <DeckBtnCircular  control={<Refresh size={36}/>} onClick={() => toggleSide()}></DeckBtnCircular>
-        {currCardRef.current + 1 !== cards.length ? <DeckBtnCircular  control={<ChevronRight size={36}/>} onClick={() => nextCard()}></DeckBtnCircular> : <DeckBtnCircular  control={<Check size={36}/>} onClick={() => handler()}></DeckBtnCircular>}
+        <DeckBtnCircular control={<ChevronLeft data-id="study-previous-btn" size={36} />} onClick={() => previousCard()}></DeckBtnCircular>
+        <DeckBtnCircular  control={<Refresh data-id="study-flip-btn" size={36}/>} onClick={() => toggleSide()}></DeckBtnCircular>
+        {currCardRef.current + 1 !== cards.length ? <DeckBtnCircular  control={<ChevronRight data-id="study-next-btn" size={36}/>} onClick={() => nextCard()}></DeckBtnCircular> : <DeckBtnCircular  control={<Check data-id="study-check-btn"size={36}/>} onClick={() => handler()}></DeckBtnCircular>}
     </FlashcardController>
     </>
   )

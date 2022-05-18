@@ -10,7 +10,7 @@ function ActivityList() {
   const {deploySocial} = useSocialAPI()
   
   return (
-    <FriendsContent>
+    <FriendsContent data-id="activity-list">
       <Paper style={{backgroundColor: '#f4f5f7', marginTop: '1em'}} withBorder shadow='md' >
         <ActivityListContainer >
           {activityData.map((activity, idx) => {

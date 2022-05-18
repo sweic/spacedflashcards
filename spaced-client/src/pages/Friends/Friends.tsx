@@ -10,14 +10,14 @@ function Friends() {
   const user = useAppSelector(state => state.auth.user)
   
   return (
-      <Tabs grow style={{height: "calc(100vh-4em)", overflowY:"hidden"}}>
+      <Tabs data-id="friendlist" grow style={{height: "calc(100vh-4em)", overflowY:"hidden"}}>
         <Tabs.Tab label="Friends">
           <FriendList/>
         </Tabs.Tab>
-        <Tabs.Tab label="Activity">
+        <Tabs.Tab data-id="activity-tab-btn" label="Activity">
           <ActivityList/>
         </Tabs.Tab>
-        <Tabs.Tab label="Search">
+        <Tabs.Tab data-id="search-tab-btn" label="Search">
           <FriendSearch/>
         </Tabs.Tab>
       </Tabs>

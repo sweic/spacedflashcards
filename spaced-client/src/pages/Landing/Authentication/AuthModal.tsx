@@ -1,12 +1,10 @@
-import React from 'react'
-import {useState, useRef} from 'react'
-import {Tabs, TextInput, Group} from '@mantine/core'
-import {useForm} from '@mantine/form'
+import { Tabs } from '@mantine/core'
+import React, { useState } from 'react'
 import Login from './Login'
 import Register from "./Register"
 import { AuthHeader, AuthTabs } from "./Styles"
 
-function AuthModal({curr = 1}: {curr: number}): JSX.Element {
+function AuthModal({curr}: {curr: number}): JSX.Element {
   const [active, setActive] = useState(curr)
 
   return (
@@ -14,7 +12,7 @@ function AuthModal({curr = 1}: {curr: number}): JSX.Element {
       <AuthHeader>
           <AuthTabs>
             <Tabs active={active} onTabChange={setActive}>
-                <Tabs.Tab label="Register"><Register/></Tabs.Tab>
+                <Tabs.Tab data-id="register-tab"  label="Register"><Register/></Tabs.Tab>
                 <Tabs.Tab label="Login"><Login/></Tabs.Tab>
             </Tabs>
           </AuthTabs>

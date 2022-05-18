@@ -35,7 +35,7 @@ function DeleteModal({onClose}: {onClose: () => void}) {
       </Text>
       <DeleteModalBtns>
         <Button color="white" onClick={() => onClose()}>Cancel</Button>
-        <Button color="red" onClick={() => handleDelete()}>Delete</Button>
+        <Button color="red" data-id="modal-delete-btn" onClick={() => handleDelete()}>Delete</Button>
       </DeleteModalBtns>
       </>
       }

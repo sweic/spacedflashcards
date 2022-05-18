@@ -14,17 +14,17 @@ interface CommonCardProps {
 
 export const StudyContainer = styled.div`
     width: 100%;
-    height: 100%;
-    overflow-y: auto !important
+    overflow-y: auto !important;
     
 `
 export const FlashcardsContainer = styled.div`
     word-wrap: break-word;
     max-width: 100%;
-    height: 550px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     margin: 0 auto;
     margin-top: 1.5em;
-
     @media (min-width: 481px) {
         max-width: 800px;
     }
@@ -58,13 +58,17 @@ export const FlashcardsBox = styled.div`
     position: relative;
     height: 450px;
     margin-top: 1.5em;
+    
+    @media (max-height: 680px) {
+        height: 400px;
+    }
 
 `
 
 export const SideDisplay = styled.span`
     position: absolute;
     z-index: 1002;
-    right: 8%;
+    right: 10%;
     top: 6%;
     font-size: 14px;
     font-weight: bolder;
@@ -93,6 +97,7 @@ export const CommonCard = styled.div`
 
     > * {
         color: black;
+        margin: auto !important;
     }
 
     @media (min-width: 481px) {
@@ -106,7 +111,7 @@ export const CommonCard = styled.div`
         height: 380px !important;
     }
 
-    @media (max-height: 640px) {
+    @media (max-height: 680px) {
         padding: 1.5em !important;
         max-width: 82% !important;
         height: 380px !important;  
@@ -119,6 +124,7 @@ export const FrontCard = styled(CommonCard)<CommonCardProps>`
     transform: ${props => props.isAnimating && props.isFrontRef ? "translateY(-10%)" : "translateY(0%)"};
     transition: ${props => props.isAnimating && props.isFrontRef ? "" : "300ms ease-in-out"};
     z-index: ${props => props.shown ? '1000' : "1"};
+    display: ${props => props.shown ? "" : "none"};
 
 `
 
@@ -126,27 +132,30 @@ export const BackCard = styled(CommonCard)<CommonCardProps>`
     transform: ${props => props.isAnimating && !props.isFrontRef ? "translateY(-10%)" : "translateY(0%)"};
     transition: ${props => props.isAnimating && !props.isFrontRef ? "" : "300ms ease-in-out"};
     z-index: ${props => props.shown ? '1000' : "1"};
+    display: ${props => props.shown ? "" : "none"};
 
+`
+
+export const PlaceholderCard = styled(CommonCard)<CommonCardProps>`
+    z-index: 999
 `
 
 export const FlashcardController = styled.div`
     color: white;
     align-items: center;
-    margin-top: 3.5em !important;
-    margin: 0 auto;
+    margin: 1em auto;
     width: 300px;
     height: 60px;
     background-color: #a5b8d1;
     border-radius: 2em;
     display: flex;
     justify-content: space-evenly;
-    margin-top: 3em;
 
     @media (max-width: 480px) {
         margin-top: .8em !important;
     }
 
-    @media (max-height: 640px) {
-        margin-top: .8em !important;
+    @media (max-height: 680px) {
+        margin: .8em auto !important;
     }
 `

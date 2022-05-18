@@ -23,8 +23,8 @@ function Header() {
   return (
       <>
         <HeaderContainer>
-            <h1>Spaced</h1>
-            {!auth.user ? <p onClick={() => authModal.open()}>Login</p> : <p>Welcome back {auth.user}</p>}
+            <h1 data-id="header">Spaced</h1>
+            {!auth.user ? <p data-id="login-btn" onClick={() => authModal.open()}>Login</p> : <p>Welcome back {auth.user}</p>}
             <Modal
               width={400}
               onClose={authModal.close}

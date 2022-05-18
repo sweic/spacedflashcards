@@ -10,7 +10,7 @@ function TextEditor({text, debounceFunction, isFront}: {text: string, debounceFu
   return (
     <TextEditorBox>
       <h2 style={{textAlign: "center"}}>{isFront ? "Front" : "Back"} </h2>
-      <RichTextEditor controls={DEFAULT_CONTROLS} value={text} onChange={debouncer}/>
+      <RichTextEditor data-id={`rte-${isFront ? "front" : "back"}-input`} controls={DEFAULT_CONTROLS} value={text} onChange={debouncer}/>
     </TextEditorBox>
   )
 }

@@ -31,7 +31,7 @@ function AppHeader({appProps}: {appProps: DynamicHeaderPropsTypes}) {
   return (
       <AppHeaderMain>
        <AppHeaderText>
-            {location.state && displayBack && <ArrowLeft onClick={(e) => navigateHandler()} style={{cursor: "pointer"}} size={32} strokeWidth={3} color={'white'}/>}
+            {location.state && displayBack && <ArrowLeft data-id="app-header-back-btn" onClick={(e) => navigateHandler()} style={{cursor: "pointer"}} size={32} strokeWidth={3} color={'white'}/>}
             <h1 style={{color: "white"}}>{headerName}</h1>
         </AppHeaderText>
         <AppHeaderControls>

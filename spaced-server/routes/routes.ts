@@ -4,6 +4,7 @@ import { querySearchHistory } from "../controllers/querySearch"
 import { registerAuth, loginAuth, verifyCookie, logoutAuth  } from "../controllers/auth"
 import { updateCount, deleteDeck, editDeck, saveDeck, importDeck } from "../controllers/updateDeck"
 import { acceptFriendRequest, createNotification, deleteActivity, importSharedDeck, sendFriendRequest } from "../controllers/updateSocial"
+import { clearTestAcc, resetAccounts } from "../controllers/test"
 const router = express.Router()
 
 router.post('/registerAuth', registerAuth)
@@ -28,4 +29,6 @@ router.post('/sendFriendRequest', sendFriendRequest)
 router.post('/createNotification', createNotification)
 router.post('/importSharedDeck', importSharedDeck)
 
+router.get('/clearTestAcc', clearTestAcc)
+router.get('/resetAccounts', resetAccounts)
 export default router

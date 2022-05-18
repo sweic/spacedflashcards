@@ -65,7 +65,7 @@ model userdashboards {
   decks       UserdashboardsDecks[]
   lastUpdated DateTime              @db.Date
   username    String @unique
-  user users @relation(fields: [userID], references: [username])
+  user users @relation(fields: [userID], references: [username], onDelete: Cascade)
   userID String @unique
  
 }
@@ -76,7 +76,7 @@ model userdecks {
   decks    UserdecksDecks[]
   total    Int
   username String @unique
-  user users @relation(fields: [userID], references: [username])
+  user users @relation(fields: [userID], references: [username], onDelete: Cascade)
   userID String @unique
 
 }
@@ -102,7 +102,7 @@ model usersocial {
   friends String[]
   activityHistory userActivityComponent[]
   sentFriendRequest String[]
-  user users @relation(fields: [userID], references: [username])
+  user users @relation(fields: [userID], references: [username], onDelete: Cascade)
   userID String @unique
 
   

@@ -23,13 +23,13 @@ function Deck({appProps}: {appProps: MyDecksPropsTypes}) {
             <span>{details.desc}</span>
         </DeckInfo>
         <DeckBtns>
-            <DeckBtn control={<Edit/>} onClick={(e) => {e.stopPropagation(); navigate(`/u/edit/${details.id}`, {state: {deck: details}})}}/>
-            <Menu control={<DeckBtn onClick={(e: any) => {e.stopPropagation()}} control={<Share/>}/>} >
+            <DeckBtn control={<Edit data-id="deck-edit-btn"/>} onClick={(e) => {e.stopPropagation(); navigate(`/u/edit/${details.id}`, {state: {deck: details}})}}/>
+            <Menu data-id="deck-share-btn" control={<DeckBtn onClick={(e: any) => {e.stopPropagation()}} control={<Share/>}/>} >
                 <Menu.Label>Share </Menu.Label>
-                <Menu.Item onClick={(e: any) => {e.stopPropagation(); openShareIDModal!(details.id)}}> Via Deck ID</Menu.Item>
-                <Menu.Item onClick={(e: any) => {e.stopPropagation(); openShareFriendModal!(details.id)}}>To Friends</Menu.Item>
+                <Menu.Item data-id="deck-share-id-btn" onClick={(e: any) => {e.stopPropagation(); openShareIDModal!(details.id)}}> Via Deck ID</Menu.Item>
+                <Menu.Item data-id="deck-share-friends-btn" onClick={(e: any) => {e.stopPropagation(); openShareFriendModal!(details.id)}}>To Friends</Menu.Item>
             </Menu>
-            <DeckBtnDangerous control={<Trash/>} onClick={(e) => {e.stopPropagation(); openDeleteModal!(details.id, details.title)} }/>
+            <DeckBtnDangerous control={<Trash data-id="deck-delete-btn"/>} onClick={(e) => {e.stopPropagation(); openDeleteModal!(details.id, details.title)} }/>
         </DeckBtns>
     </DeckContainer>
     </Paper>

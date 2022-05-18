@@ -12,11 +12,11 @@ function Controllers({appProps}: {appProps: ControllerPropTypes}) {
  
   return (
     <CreateBtnBox>
-        <DeckBtnCircular control={<Trash size={24}/>} onClick={(e) => deleteCard()}/>
-        <DeckBtnCircular control={<ChevronLeft size={36} strokeWidth={3}/>} onClick={(e) => previousCard()}/>
-        <p>{curr + 1} / {deck.length}</p>
-        <DeckBtnCircular control={<ChevronRight size={36} strokeWidth={3}/>}  onClick={(e) => nextCard()}/>
-        <DeckBtnCircular control={<Plus size={36}/>} onClick={(e) => addCard()}/>
+        <DeckBtnCircular control={<Trash data-id="create-delete-card-btn" size={24}/>} onClick={(e) => deleteCard()}/>
+        <DeckBtnCircular  control={<ChevronLeft data-id="create-previous-card-btn" size={36} strokeWidth={3}/>} onClick={(e) => previousCard()}/>
+        <p data-id="create-deck-curr">{`${curr + 1} / ${deck.length}`}</p>
+        <DeckBtnCircular control={<ChevronRight data-id="create-next-card-btn" size={36} strokeWidth={3}/>}  onClick={(e) => nextCard()}/>
+        <DeckBtnCircular control={<Plus data-id="create-add-card-btn" size={36}/>} onClick={(e) => addCard()}/>
     </CreateBtnBox>
   )
 }
