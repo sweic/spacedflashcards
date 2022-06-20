@@ -20,6 +20,6 @@ function HistoryRouter({ basename, history, children }: Props) {
       basename={basename}
     />
   );
-};  
+}
 
-export default HistoryRouter
+export default HistoryRouter;
